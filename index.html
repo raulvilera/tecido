@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividade de Ciências - 6º Ano - 3º Bimestre</title>
+    <style>
+        :root {
+            --primary-green: #1a6e4a;
+            --dark-green: #0f4a30;
+            --light-green: #d4edda;
+            --text-color: #333;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --border-color: #ced4da;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 3px solid var(--primary-green);
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            color: var(--primary-green);
+            margin: 0;
+            font-size: 1.8em;
+        }
+
+        header h2 {
+            color: #555;
+            margin: 5px 0;
+            font-size: 1.2em;
+            font-weight: normal;
+        }
+
+        .activity-description {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .activity-description h3 {
+            color: var(--primary-green);
+            font-size: 1.5em;
+            margin: 0 0 5px 0;
+            text-transform: uppercase;
+        }
+
+        .activity-description h4 {
+            color: var(--dark-green);
+            font-size: 1.2em;
+            margin: 0;
+            font-weight: normal;
+            font-style: italic;
+        }
+
+        /* Ajuste do Grid para dimensionamento específico */
+        .student-info {
+            display: grid;
+            /* Colunas: Turma (1fr), Aluno (2fr) - Aluno precisa de mais espaço */
+            grid-template-columns: 1fr 2fr;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: var(--light-green);
+            border-radius: 10px;
+        }
+
+        /* Linhas de 3 colunas para RA, Dígito, Data */
+        .student-info .row-3-cols {
+            grid-column: span 2;
+            display: grid;
+            grid-template-columns: 1.5fr 0.8fr 1fr; /* RA maior, Dígito menor, Data média */
+            gap: 15px;
+        }
+
+        /* Linha para E-mail (largura total) */
+        .student-info .full-width {
+            grid-column: span 2;
+        }
+
+        /* NOVO: Linha para Nº de Chamada (apenas 1 coluna para não esticar) */
+        .student-info .row-1-col {
+            grid-column: span 1;
+            /* Opcional: alinhar à esquerda ou centro */
+            justify-self: start;
+            width: 100%;
+        }
+
+        .student-info label {
+            font-weight: bold;
+            color: var(--dark-green);
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+
+        .student-info select, .student-info input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 0.95em;
+            box-sizing: border-box;
+            background-color: #fff;
+            text-overflow: ellipsis;
+        }
+
+        .student-info input[readonly] {
+            background-color: #e9ecef;
+            color: #495057;
+        }
+
+        .question-card {
+            background-color: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            transition: box-shadow 0.3s;
+        }
+
+        .question-card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .question-card h3 {
+            color: var(--primary-green);
+            font-size: 1.1em;
+            margin-top: 0;
+        }
+
+        .question-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 15px 0;
+            display: block;
+            border: 2px solid #eee;
+        }
+
+        .options-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 15px;
+        }
+
+        .option-item {
+            margin-bottom: 10px;
+        }
+
+        .option-btn {
+            width: 100%;
+            text-align: left;
+            padding: 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background-color: #f1f3f5;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 4px 0 #adb5bd, 0 5px 5px rgba(0,0,0,0.1);
+            position: relative;
+            top: 0;
+            color: var(--text-color);
+        }
+
+        .option-btn:active, .option-btn.selected {
+            box-shadow: 0 1px 0 #adb5bd, 0 2px 3px rgba(0,0,0,0.1);
+            top: 3px;
+        }
+
+        .option-btn.selected {
+            background-color: var(--dark-green);
+            color: white;
+            font-weight: bold;
+            border-color: var(--dark-green);
+        }
+
+        .option-btn.correct {
+            background-color: #28a745 !important;
+            color: white !important;
+            font-weight: bold !important;
+            border-color: #1e7e34 !important;
+            box-shadow: 0 1px 0 #1e7e34, 0 2px 3px rgba(0,0,0,0.1) !important;
+            top: 3px !important;
+        }
+
+        .option-btn.incorrect {
+            background-color: #dc3545 !important;
+            color: white !important;
+            font-weight: bold !important;
+            border-color: #bd2130 !important;
+            box-shadow: 0 1px 0 #bd2130, 0 2px 3px rgba(0,0,0,0.1) !important;
+            top: 3px !important;
+        }
+
+        .feedback {
+            margin-top: 10px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .feedback.correct { color: #28a745; display: block; }
+        .feedback.incorrect { color: #dc3545; display: block; }
+
+        .dissertative-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 100px;
+            box-sizing: border-box;
+        }
+
+        .dissertative-input:focus {
+            outline: none;
+            border-color: var(--primary-green);
+        }
+
+        .btn-submit {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background-color: var(--primary-green);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+            box-shadow: 0 5px 0 var(--dark-green), 0 6px 10px rgba(0,0,0,0.2);
+        }
+
+        .btn-submit:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 var(--dark-green), 0 3px 5px rgba(0,0,0,0.2);
+        }
+
+        .btn-submit:hover {
+            background-color: #145c3c;
+        }
+
+        .result-message {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .result-message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .result-message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        @media (max-width: 600px) {
+            .student-info {
+                grid-template-columns: 1fr;
+            }
+            .student-info .row-3-cols {
+                grid-template-columns: 1fr;
+                grid-column: span 1;
+            }
+            .student-info .full-width {
+                grid-column: span 1;
+            }
+            .student-info .row-1-col {
+                grid-column: span 1;
+            }
+            header h1 { font-size: 1.4em; }
+            .activity-description h3 { font-size: 1.2em; }
+            .activity-description h4 { font-size: 1em; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>E.E. LYDIA KITZ MOREIRA</h1>
+        <h2>Atividade de Ciências - 6º Ano - 3º Bimestre</h2>
+        <p><strong>Valor:</strong> 10,0 pontos</p>
+    </header>
+
+    <div class="activity-description">
+        <h3>ATIVIDADE DE CIÊNCIAS (3º BIMESTRE)</h3>
+        <h4>Revisão para Prova Paulista</h4>
+    </div>
+
+    <!-- Cabeçalho Redimensionado -->
+    <div class="student-info">
+        <!-- Linha 1: Turma e Aluno -->
+        <div>
+            <label for="turma">Turma:</label>
+            <select id="turma" onchange="carregarAlunos()">
+                <option value="">Selecione a Turma</option>
+                <option value="6º Ano A">6º Ano A</option>
+                <option value="6º Ano B">6º Ano B</option>
+                <option value="6º Ano C">6º Ano C</option>
+            </select>
+        </div>
+        <div>
+            <label for="aluno">Nome do Aluno:</label>
+            <select id="aluno" onchange="preencherDadosAluno()">
+                <option value="">Selecione o Aluno</option>
+            </select>
+        </div>
+
+        <!-- Linha 2: RA, Dígito e Data -->
+        <div class="row-3-cols">
+            <div>
+                <label for="ra">RA:</label>
+                <input type="text" id="ra" readonly placeholder="Automático">
+            </div>
+            <div>
+                <label for="digito">Dígito:</label>
+                <input type="text" id="digito" readonly placeholder="Automático">
+            </div>
+            <div>
+                <label for="data">Data:</label>
+                <input type="text" id="data" readonly placeholder="Automático">
+            </div>
+        </div>
+
+        <!-- Linha 3: E-mail -->
+        <div class="full-width">
+            <label for="email">E-mail Institucional:</label>
+            <input type="text" id="email" readonly placeholder="Automático">
+        </div>
+
+        <!-- Linha 4: Nº de Chamada (Ajustado para não esticar) -->
+        <div class="row-1-col">
+            <label for="chamada">Nº de Chamada:</label>
+            <input type="text" id="chamada" readonly placeholder="Automático">
+        </div>
+    </div>
+
+    <form id="quizForm">
+        <!-- Questão 1 -->
+        <div class="question-card">
+            <h3>1. (Múltipla Escolha) A teoria celular é um dos pilares da Biologia. Qual das alternativas abaixo representa um de seus princípios fundamentais?</h3>
+            <img src="q1-celula.png" alt="Célula animal e vegetal" class="question-image">
+            <ul class="options-list">
+                <li class="option-item"><button type="button" class="option-btn" data-question="q1" data-value="A" onclick="selecionarOpcao(this, 'q1')">A) Todos os seres vivos são pluricelulares.</button></li>
+                <li class="option-item"><button type="button" class="option-btn" data-question="q1" data-value="B" onclick="selecionarOpcao(this, 'q1')">B) A célula é a menor unidade estrutural e funcional dos seres vivos.</button></li>
+                <li class="option-item"><button type="button" class="option-btn" data-question="q1" data-value="C" onclick="selecionarOpcao(this, 'q1')">C) As células surgem a partir de matéria inanimada.</button></li>
+                <li class="option-item"><button type="button" class="option-btn" data-question="q1" data-value="D" onclick="selecionarOpcao(this, 'q1')">D) Apenas os animais possuem células.</button></li>
+            </ul>
+            <div class="feedback" id="feedback-q1"></div>
+        </div>
+
+        <!-- Questão 2 -->
+        <div class="question-card">
+            <h3>2. (Múltipla Escolha) O desenvolvimento do microscópio foi crucial para o avanço da Biologia Celular. Sobre a estrutura celular, é correto afirmar que:</h3>
+            <img src="q2-microscopio.png" alt="Microscópio óptico" class="question-image">
+            <ul class="options-list">
+                <li class="option-item"><button type="button" class="option-btn" data-question="q2" data-value="A" onclick="selecionarOpcao(this, 'q2')">A) Células procariontes possuem núcleo organizado.</button></li>
+                <li class="option-item"><button type="button" class="option-btn" data-question="q2" data-value="B" onclick="selecionarOpcao(this, 'q2')">B) A membrana plasmática é responsável pela produção de energia.</button></li>
+                <li class="option-item"><button type="button" class="option-btn" data-question="q2" data-value="C" onclick="selecionarOpcao(this, 'q2')">C) O citoplasma é o local onde ocorrem diversas reações químicas.</button></li>
+                <li class="option-item"><button type="button" class="option-btn" data-question="q2" data-value="D" onclick="selecionarOpcao(this, 'q2')">D) A parede celular é uma estrutura presente apenas em células animais.</button></li>
+            </ul>
+            <div class="feedback" id="feedback-q2"></div>
+        </div>
+
+        <!-- Questão 3 (Focada em Níveis de Organização) -->
+        <div class="question-card">
+            <h3>3. (Múltipla Escolha) Os níveis de organização biológica são fundamentais para entender a complexidade dos seres vivos. A sequência correta, do mais simples para o mais complexo, é:</h3>
+            <img src="q3-organizacao.png" alt="Níveis de organização" class="question-image">
+            <ul class="options-list">
+                <li class="option-item"><button type="button" class="option-btn" data-question="q3" data-value="A" onclick="selecionarOpcao(this, 'q3')">A) Célula -> Tecido -> Órgão -> Sistema -> Organismo.</button></li>
+                <li class="option-item"><button type="button" class="option-btn" data-question="q3" data-value="B" onclick="selecionarOpcao(this, 'q3')">B) Organismo -> Sistema -> Órgão -> Tecido -> Célula.</button></li>
+                <li class="option-item"><button type="button" class="option-btn" data-question="q3" data-value="C" onclick="selecionarOpcao(this, 'q3')">C) Tecido -> Célula -> Órgão -> Organismo -> Sistema.</button></li>
+                <li class="option-item"><button type="button" class="option-btn" data-question="q3" data-value="D" onclick="selecionarOpcao(this, 'q3')">D) Órgão -> Tecido -> Célula -> Sistema -> Organismo.</button></li>
+            </ul>
+            <div class="feedback" id="feedback-q3"></div>
+        </div>
+
+        <!-- Questão 4 (Focada em Saneamento Básico) -->
+        <div class="question-card">
+            <h3>4. (Múltipla Escolha) Sobre as doenças causadas por microrganismos e a importância do saneamento básico, é correto afirmar:</h3>
+            <img src="q4-saneamento.png" alt="Saneamento básico" class="question-image">
+            <ul class="options-list">
+                <li class="option-item"><button type="button" class="option-btn" data-question="q4" data-value="A" onclick="selecionarOpcao(this, 'q4')">A) O saneamento básico não tem relação com a prevenção de doenças.</button></li>
+                <li class="option-item"><button type="button" class="option-btn" data-question="q4" data-value="B" onclick="selecionarOpcao(this, 'q4')">B) Todas as bactérias são prejudiciais à saúde humana.</button></li>
+                <li class="option-item"><button type="button" class="option-btn" data-question="q4" data-value="C" onclick="selecionarOpcao(this, 'q4')">C) O tratamento de água e esgoto é uma medida eficaz para prevenir doenças.</button></li>
+                <li class="option-item"><button type="button" class="option-btn" data-question="q4" data-value="D" onclick="selecionarOpcao(this, 'q4')">D) Os vírus são seres vivos completos e não precisam de células para se reproduzir.</button></li>
+            </ul>
+            <div class="feedback" id="feedback-q4"></div>
+        </div>
+
+        <!-- Questão 5 (Focada em Níveis de Organização - Tecidos) -->
+        <div class="question-card">
+            <h3>5. (Múltipla Escolha) No corpo humano, as células especializadas se organizam para formar tecidos. Qual das alternativas abaixo representa corretamente um tipo de tecido e sua função principal?</h3>
+            <img src="q5-tecidos.png" alt="Tecidos do corpo humano" class="question-image">
+            <ul class="options-list">
+                <li class="option-item"><button type="button" class="option-btn" data-question="q5" data-value="A" onclick="selecionarOpcao(this, 'q5')">A) Tecido epitelial: responsável pelo revestimento e proteção de superfícies.</button></li>
+                <li class="option-item"><button type="button" class="option-btn" data-question="q5" data-value="B" onclick="selecionarOpcao(this, 'q5')">B) Tecido ósseo: responsável pela transmissão de impulsos nervosos.</button></li>
+                <li class="option-item"><button type="button" class="option-btn" data-question="q5" data-value="C" onclick="selecionarOpcao(this, 'q5')">C) Tecido muscular: responsável pela produção de hormônios.</button></li>
+                <li class="option-item"><button type="button" class="option-btn" data-question="q5" data-value="D" onclick="selecionarOpcao(this, 'q5')">D) Tecido sanguíneo: responsável pela sustentação do corpo.</button></li>
+            </ul>
+            <div class="feedback" id="feedback-q5"></div>
+        </div>
+
+        <!-- Questão 6 (Focada em Saneamento Básico - Doenças) -->
+        <div class="question-card">
+            <h3>6. (Múltipla Escolha) O saneamento básico é um conjunto de medidas que visam melhorar a saúde da população. Qual das doenças abaixo está diretamente relacionada à falta de saneamento básico e pode ser prevenida com o tratamento de água e esgoto?</h3>
+            <img src="q6-doencas.png" alt="Doenças e saneamento" class="question-image">
+            <ul class="options-list">
+                <li class="option-item"><button type="button" class="option-btn" data-question="q6" data-value="A" onclick="selecionarOpcao(this, 'q6')">A) Sarampo.</button></li>
+                <li class="option-item"><button type="button" class="option-btn" data-question="q6" data-value="B" onclick="selecionarOpcao(this, 'q6')">B) Cólera.</button></li>
+                <li class="option-item"><button type="button" class="option-btn" data-question="q6" data-value="C" onclick="selecionarOpcao(this, 'q6')">C) Gripe.</button></li>
+                <li class="option-item"><button type="button" class="option-btn" data-question="q6" data-value="D" onclick="selecionarOpcao(this, 'q6')">D) Varíola.</button></li>
+            </ul>
+            <div class="feedback" id="feedback-q6"></div>
+        </div>
+
+        <!-- Questão 7 -->
+        <div class="question-card">
+            <h3>7. (Múltipla Escolha) As células animais e vegetais possuem diferenças importantes. Qual estrutura é exclusiva das células vegetais?</h3>
+            <img src="q7-celula-vegetal.png" alt="Célula vegetal" class="question-image">
+            <ul class="options-list">
+                <li class="option-item"><button type="button" class="option-btn" data-question="q7" data-value="A" onclick="selecionarOpcao(this, 'q7')">A) Mitocôndria.</button></li>
+                <li class="option-item"><button type="button" class="option-btn" data-question="q7" data-value="B" onclick="selecionarOpcao(this, 'q7')">B) Cloroplasto.</button></li>
+                <li class="option-item"><button type="button" class="option-btn" data-question="q7" data-value="C" onclick="selecionarOpcao(this, 'q7')">C) Núcleo.</button></li>
+                <li class="option-item"><button type="button" class="option-btn" data-question="q7" data-value="D" onclick="selecionarOpcao(this, 'q7')">D) Membrana plasmática.</button></li>
+            </ul>
+            <div class="feedback" id="feedback-q7"></div>
+        </div>
+
+        <!-- Questão 8 (Dissertativa - Níveis de Organização) -->
+        <div class="question-card">
+            <h3>8. (Dissertativa) Descreva a organização dos seres vivos multicelulares, desde a célula até o organismo, explicando a função dos tecidos e dos órgãos. Dê um exemplo de sistema do corpo humano e seus principais órgãos.</h3>
+            <img src="q8-organizacao-corpo.png" alt="Níveis de organização" class="question-image">
+            <textarea class="dissertative-input" id="q8" placeholder="Escreva sua resposta aqui..."></textarea>
+        </div>
+
+        <!-- Questão 9 (Dissertativa - Saneamento Básico) -->
+        <div class="question-card">
+            <h3>9. (Dissertativa) Com base nos estudos sobre microrganismos e saúde, explique como o saneamento básico contribui para a prevenção de doenças causadas por bactérias e vírus. Cite um exemplo de doença que pode ser evitada com essa medida.</h3>
+            <img src="q9-saude-saneamento.png" alt="Saneamento e saúde" class="question-image">
+            <textarea class="dissertative-input" id="q9" placeholder="Escreva sua resposta aqui..."></textarea>
+        </div>
+
+        <!-- Questão 10 (Dissertativa - Teoria Celular e Microrganismos) -->
+        <div class="question-card">
+            <h3>10. (Dissertativa) Explique a diferença entre seres vivos unicelulares e pluricelulares, dando um exemplo de cada um. Em seguida, descreva o que é a teoria celular e qual a sua importância para a Biologia.</h3>
+            <img src="q10-unicelular-pluricelular.png" alt="Seres unicelulares e pluricelulares" class="question-image">
+            <textarea class="dissertative-input" id="q10" placeholder="Escreva sua resposta aqui..."></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit">Enviar Atividade</button>
+    </form>
+
+    <div id="resultMessage" class="result-message"></div>
+</div>
+
+<script>
+    // Banco de dados de alunos completo com todos os campos solicitados
+    const alunosData = {
+        "6º Ano A": [
+            { chamada: "1", nome: "ANA CHRYSTINA TIEKO DA PAIXAO", ra: "000115865039", digito: "5", email: "00001158650395SP@al.educacao.sp.gov.br" },
+            { chamada: "2", nome: "ANTONELLA ALVES XAVIER", ra: "000121475554", digito: "9", email: "00001214755549SP@al.educacao.sp.gov.br" },
+            { chamada: "3", nome: "ARTHUR DANIEL MASSAKI LIMA", ra: "000121483786", digito: "4", email: "00001214837864SP@al.educacao.sp.gov.br" },
+            { chamada: "4", nome: "BARBARA CRISTINA FERREIRA DA SILVA", ra: "000123020364", digito: "3", email: "00001230203643sp@al.educacao.sp.gov.br" },
+            { chamada: "5", nome: "BERNARDO GOMES ANDRADE DE OLIVEIRA", ra: "000121494038", digito: "9", email: "00001214940389sp@al.educacao.sp.gov.br" },
+            { chamada: "6", nome: "BYANCA DOS SANTOS PEREIRA", ra: "000116500967", digito: "5", email: "00001165009675sp@al.educacao.sp.gov.br" },
+            { chamada: "8", nome: "DANIEL DA SILVA MARQUES", ra: "000115877684", digito: "6", email: "00001158776846sp@al.educacao.sp.gov.br" },
+            { chamada: "9", nome: "DAVI LUCAS DA SILVA FEITOSA", ra: "000116501864", digito: "0", email: "00001165018640SP@al.educacao.sp.gov.br" },
+            { chamada: "11", nome: "DIOGO SOARES FIUZA", ra: "000120626520", digito: "6", email: "00001206265206sp@al.educacao.sp.gov.br" },
+            { chamada: "12", nome: "EDUARDA SOPHIA LOPES LIMA", ra: "000116502560", digito: "7", email: "00001165025607SP@al.educacao.sp.gov.br" },
+            { chamada: "13", nome: "EDUARDA STHEFANY MARQUES DA SILVA", ra: "000114738560", digito: "9", email: "00001147385609sp@al.educacao.sp.gov.br" },
+            { chamada: "14", nome: "ENZO GABRIEL SOUZA LOPES", ra: "000115878997", digito: "X", email: "0000115878997xsp@al.educacao.sp.gov.br" },
+            { chamada: "15", nome: "ESTER VITORIA FELIX DA CRUZ", ra: "000115879196", digito: "3", email: "00001158791963SP@al.educacao.sp.gov.br" },
+            { chamada: "16", nome: "GUILHERME HENRIQUE ALMEIDA DO NASCIMENTO", ra: "000122358464", digito: "1", email: "00001223584641sp@al.educacao.sp.gov.br" },
+            { chamada: "17", nome: "HIAGO ALEXANDRE BARBOSA DE PAULA", ra: "000116671183", digito: "3", email: "00001166711833sp@al.educacao.sp.gov.br" },
+            { chamada: "18", nome: "JORGE GABRIEL SANTOS ASSIS", ra: "000121487546", digito: "4", email: "00001214875464sp@al.educacao.sp.gov.br" },
+            { chamada: "19", nome: "MARIA CLARA MOURA ROMUALDO", ra: "000125907584", digito: "9", email: "00001259075849sp@al.educacao.sp.gov.br" },
+            { chamada: "20", nome: "MATHEUS CARVALHO ROSA", ra: "000121488429", digito: "5", email: "00001214884295SP@al.educacao.sp.gov.br" },
+            { chamada: "22", nome: "MELISSA MIRELLY OLIVEIRA DOS REIS", ra: "000116517595", digito: "2", email: "00001165175952SP@al.educacao.sp.gov.br" },
+            { chamada: "23", nome: "MURILO SARAIVA TRINDADE", ra: "000121479104", digito: "9", email: "00001214791049SP@al.educacao.sp.gov.br" },
+            { chamada: "24", nome: "PABLO LUCAS DA SILVA", ra: "000115888557", digito: "X", email: "0000115888557XSP@al.educacao.sp.gov.br" },
+            { chamada: "25", nome: "PEDRO HENRIQUE DO NASCIMENTO SANTOS", ra: "000115889114", digito: "3", email: "00001158891143SP@al.educacao.sp.gov.br" },
+            { chamada: "27", nome: "PEDRO LUCAS CRUZ PRIORI", ra: "000115889226", digito: "3", email: "00001158892263SP@al.educacao.sp.gov.br" },
+            { chamada: "29", nome: "PIETRO OLIVEIRA FREITAS", ra: "000123926792", digito: "7", email: "00001239267927sp@al.educacao.sp.gov.br" },
+            { chamada: "30", nome: "RAFAEL ALVES ROCHA", ra: "000124251136", digito: "2", email: "00001242511362sp@al.educacao.sp.gov.br" },
+            { chamada: "31", nome: "RIQUELME SOTERO RODRIGUES", ra: "000123013870", digito: "5", email: "00001230138705SP@al.educacao.sp.gov.br" },
+            { chamada: "32", nome: "SOPHIA GIOVANA OLIVEIRA ALVES", ra: "000116521364", digito: "3", email: "00001165213643SP@al.educacao.sp.gov.br" },
+            { chamada: "33", nome: "VINICIUS BESERRA ARAUJO", ra: "000115067918", digito: "9", email: "00001150679189SP@al.educacao.sp.gov.br" },
+            { chamada: "34", nome: "VINICIUS RIBEIRO AMARAL ABRAHAO", ra: "000116522317", digito: "X", email: "0000116522317XSP@al.educacao.sp.gov.br" }
+        ],
+        "6º Ano B": [
+            { chamada: "2", nome: "ANA CLARA BATISTA BRITO", ra: "000114693372", digito: "1", email: "00001146933721sp@al.educacao.sp.gov.br" },
+            { chamada: "4", nome: "ANNA JULIA CARVALHO MARQUES", ra: "000121487411", digito: "3", email: "00001214874113sp@al.educacao.sp.gov.br" },
+            { chamada: "7", nome: "DAVI LUIZ CARDOSO BARBOSA", ra: "000115878112", digito: "X", email: "0000115878112xsp@al.educacao.sp.gov.br" },
+            { chamada: "8", nome: "ELOAH OLIVEIRA DE SOUZA", ra: "000125473061", digito: "8", email: "00001254730618sp@al.educacao.sp.gov.br" },
+            { chamada: "9", nome: "ESTHER ARAUJO DE OLIVEIRA", ra: "000120673269", digito: "6", email: "00001206732696SP@al.educacao.sp.gov.br" },
+            { chamada: "10", nome: "JAMILY FERNANDA GONZALES ADUVIRI", ra: "000115364767", digito: "9", email: "00001153647679SP@al.educacao.sp.gov.br" },
+            { chamada: "11", nome: "KENNEDY GABRIEL ALVES DA SILVA", ra: "000120513258", digito: "2", email: "00001205132582SP@al.educacao.sp.gov.br" },
+            { chamada: "13", nome: "LAURA VITORIA JESUS SOUZA", ra: "000115885105", digito: "4", email: "00001158851054sp@al.educacao.sp.gov.br" },
+            { chamada: "17", nome: "MARIA EDUARDA RIBEIRO DE OLIVEIRA ROCHA", ra: "000121490813", digito: "5", email: "00001214908135sp@al.educacao.sp.gov.br" },
+            { chamada: "18", nome: "MARIA LUIZA ALVES DA SILVA", ra: "000123924084", digito: "3", email: "00001239240843sp@al.educacao.sp.gov.br" },
+            { chamada: "20", nome: "MATHEUS MEDEIROS DE FARIA MONZEN", ra: "000120777079", digito: "6", email: "00001207770796SP@al.educacao.sp.gov.br" },
+            { chamada: "23", nome: "MIGUEL GOUVEA CARDOSO", ra: "000121493503", digito: "5", email: "00001214935035SP@al.educacao.sp.gov.br" },
+            { chamada: "24", nome: "MIGUEL OLIVEIRA ALVES", ra: "000115887723", digito: "7", email: "00001158877237SP@al.educacao.sp.gov.br" },
+            { chamada: "26", nome: "MIGUEL SILVA SOUZA", ra: "000116518049", digito: "2", email: "00001165180492SP@al.educacao.sp.gov.br" },
+            { chamada: "27", nome: "MILLENA ALEJANDRA CARDOSO BUSTILLOS", ra: "000116518275", digito: "0", email: "00001165182750SP@al.educacao.sp.gov.br" },
+            { chamada: "28", nome: "MILLENA OLIVEIRA DOS SANTOS", ra: "000115070136", digito: "5", email: "00001150701365SP@al.educacao.sp.gov.br" },
+            { chamada: "29", nome: "NICOLE FERREIRA SANTOS", ra: "000115888404", digito: "7", email: "00001158884047SP@al.educacao.sp.gov.br" },
+            { chamada: "30", nome: "NICOLLY EVARISTO DUTRA", ra: "000122359565", digito: "1", email: "00001223595651SP@al.educacao.sp.gov.br" },
+            { chamada: "33", nome: "PIETRO GABRIEL VIEIRA DA SILVA", ra: "000115313726", digito: "4", email: "00001153137264SP@al.educacao.sp.gov.br" },
+            { chamada: "34", nome: "RICHARD SAMUEL PEREIRA NASCIMENTO", ra: "000121495981", digito: "7", email: "00001214959817SP@al.educacao.sp.gov.br" },
+            { chamada: "35", nome: "SARA CAROLINE FONSECA PORFIRIO", ra: "000121622237", digito: "X", email: "0000121622237xsp@al.educacao.sp.gov.br" },
+            { chamada: "36", nome: "SOPHIA RIBEIRO SANTOS", ra: "000116521470", digito: "2", email: "00001165214702SP@al.educacao.sp.gov.br" },
+            { chamada: "37", nome: "THAYLA EMANOELLY ANDRADE FIDELIS", ra: "000122358364", digito: "8", email: "00001223583648sp@al.educacao.sp.gov.br" },
+            { chamada: "38", nome: "VITORIA YASMIN FIRMINO DE OLIVEIRA", ra: "000121494039", digito: "0", email: "00001214940390SP@al.educacao.sp.gov.br" },
+            { chamada: "39", nome: "WILLIAM ALVES CORAZZA", ra: "000116522772", digito: "1", email: "00001165227721SP@al.educacao.sp.gov.br" },
+            { chamada: "40", nome: "MANUELA ELI DOS SANTOS SILVA", ra: "000115886193", digito: "X", email: "0000115886193xsp@al.educacao.sp.gov.br" },
+            { chamada: "41", nome: "DAVI HENRIQUE SILVA DE MELO", ra: "000115877906", digito: "9", email: "00001158779069SP@al.educacao.sp.gov.br" },
+            { chamada: "42", nome: "EVELYN LORRANNY SANTOS OLIVEIRA", ra: "000116503639", digito: "3", email: "00001165036393sp@al.educacao.sp.gov.br" },
+            { chamada: "43", nome: "ENZO DOS SANTOS FIGUEIREDO", ra: "000116503118", digito: "8", email: "00001165031188SP@al.educacao.sp.gov.br" }
+        ],
+        "6º Ano C": [
+            { chamada: "2", nome: "ANA JULIA DE SOUZA LOPES", ra: "000121494768", digito: "2", email: "00001214947682sp@al.educacao.sp.gov.br" },
+            { chamada: "3", nome: "ARTHUR GOMES MINZÉ", ra: "000120627732", digito: "4", email: "00001206277324SP@al.educacao.sp.gov.br" },
+            { chamada: "4", nome: "BRAYAN DE OLIVEIRA LOPES", ra: "000116500830", digito: "0", email: "00001165008300sp@al.educacao.sp.gov.br" },
+            { chamada: "5", nome: "CARLOS HENRIQUE ROSA PAULINO", ra: "000115066913", digito: "5", email: "00001150669135sp@al.educacao.sp.gov.br" },
+            { chamada: "7", nome: "DAVI LUCAS DE SOUZA SILVA", ra: "000115877985", digito: "9", email: "00001158779859SP@al.educacao.sp.gov.br" },
+            { chamada: "8", nome: "DAVI LUCAS MATIAS RIBEIRO", ra: "000116501902", digito: "4", email: "00001165019024sp@al.educacao.sp.gov.br" },
+            { chamada: "9", nome: "DAVI SOUSA OLIVEIRA", ra: "000116502240", digito: "0", email: "00001165022400sp@al.educacao.sp.gov.br" },
+            { chamada: "11", nome: "GEOVANA SALDANHA DOS SANTOS", ra: "000116504471", digito: "7", email: "00001165044717sp@al.educacao.sp.gov.br" },
+            { chamada: "15", nome: "ISABELLY DE OLIVEIRA SANTOS", ra: "000121484870", digito: "9", email: "00001214848709SP@al.educacao.sp.gov.br" },
+            { chamada: "16", nome: "JOHN GRIGORIO SILVA", ra: "000116526248", digito: "4", email: "00001165262484SP@al.educacao.sp.gov.br" },
+            { chamada: "17", nome: "KAMILY GABRIELLY SOARES XAVIER", ra: "000116357800", digito: "9", email: "00001163578009SP@al.educacao.sp.gov.br" },
+            { chamada: "18", nome: "KAROLINA APARECIDA DE LIRA", ra: "000123013601", digito: "0", email: "00001230136010SP@al.educacao.sp.gov.br" },
+            { chamada: "19", nome: "LAVINIA LIUS DE ALMEIDA MORAES", ra: "000116493606", digito: "2", email: "00001164936062SP@al.educacao.sp.gov.br" },
+            { chamada: "20", nome: "LEANDRO OLIVEIRA LINO", ra: "000115885199", digito: "6", email: "00001158851996SP@al.educacao.sp.gov.br" },
+            { chamada: "21", nome: "LUAN HENRIQUE BERNEGOSSO DA CRUZ", ra: "000121485099", digito: "6", email: "00001214850996sp@al.educacao.sp.gov.br" },
+            { chamada: "23", nome: "MARIA CLARA DE SOUZA LOPES", ra: "000123001171", digito: "7", email: "00001230011717sp@al.educacao.sp.gov.br" },
+            { chamada: "25", nome: "MATEUS HENRIQUE SOUSA SANTOS", ra: "000115887298", digito: "7", email: "00001158872987SP@al.educacao.sp.gov.br" },
+            { chamada: "26", nome: "MIQUEIAS DEL VALLE ISAIAS MAGALHAES", ra: "000116518294", digito: "4", email: "00001165182944sp@al.educacao.sp.gov.br" },
+            { chamada: "27", nome: "MIQUEIAS PAULINO SILVA", ra: "000115068338", digito: "7", email: "00001150683387SP@al.educacao.sp.gov.br" },
+            { chamada: "28", nome: "NATAN CASTRO DE CARVALHO", ra: "000121304940", digito: "4", email: "00001213049404sp@al.educacao.sp.gov.br" },
+            { chamada: "29", nome: "NICOLLE MARQUES DA SILVA", ra: "000122359539", digito: "0", email: "00001223595390SP@al.educacao.sp.gov.br" },
+            { chamada: "32", nome: "PIETTRO SORRILHA SOUZA", ra: "000121481465", digito: "7", email: "00001214814657SP@al.educacao.sp.gov.br" },
+            { chamada: "33", nome: "RAFAELA FARIA SILVA", ra: "000121858589", digito: "4", email: "00001218585894sp@al.educacao.sp.gov.br" },
+            { chamada: "34", nome: "SOFIA GOMES DANTAS", ra: "000122357965", digito: "7", email: "00001223579657sp@al.educacao.sp.gov.br" },
+            { chamada: "35", nome: "TAYANK ROBER LIMACHI CHOQUE", ra: "000115890916", digito: "0", email: "00001158909160sp@al.educacao.sp.gov.br" },
+            { chamada: "37", nome: "VICTOR JUNIOR TENORIO COSTA", ra: "000121492763", digito: "4", email: "00001214927634sp@al.educacao.sp.gov.br" },
+            { chamada: "39", nome: "MELISSA DO NASCIMENTO FREITAS", ra: "000115887449", digito: "2", email: "00001158874492SP@al.educacao.sp.gov.br" },
+            { chamada: "41", nome: "LUHARA EMANUELLY SILVA FREITAS", ra: "000115072488", digito: "2", email: "00001150724882SP@al.educacao.sp.gov.br" }
+        ]
+    };
+
+    // Respostas corretas para as questões de múltipla escolha
+    const respostasCorretas = {
+        q1: "B",
+        q2: "C",
+        q3: "A", // Níveis de organização
+        q4: "C", // Saneamento básico
+        q5: "A", // Tecidos
+        q6: "B", // Doenças e saneamento
+        q7: "B"  // Célula vegetal
+    };
+
+    const respostasAluno = {};
+
+    // Preenche a data atual no campo de data
+    document.addEventListener('DOMContentLoaded', function() {
+        const hoje = new Date();
+        const dataFormatada = hoje.toLocaleDateString('pt-BR');
+        document.getElementById('data').value = dataFormatada;
+    });
+
+    function carregarAlunos() {
+        const turmaSelect = document.getElementById('turma');
+        const alunoSelect = document.getElementById('aluno');
+        const turma = turmaSelect.value;
+
+        // Limpa os campos
+        alunoSelect.innerHTML = '<option value="">Selecione o Aluno</option>';
+        document.getElementById('ra').value = '';
+        document.getElementById('digito').value = '';
+        document.getElementById('email').value = '';
+        document.getElementById('chamada').value = '';
+
+        if (turma && alunosData[turma]) {
+            // Ordena os alunos pelo número de chamada
+            const alunosOrdenados = alunosData[turma].sort((a, b) => parseInt(a.chamada) - parseInt(b.chamada));
+            
+            alunosOrdenados.forEach(aluno => {
+                const option = document.createElement('option');
+                option.value = aluno.ra;
+                option.textContent = aluno.nome;
+                // Armazena todos os dados no dataset da opção
+                option.dataset.chamada = aluno.chamada;
+                option.dataset.ra = aluno.ra;
+                option.dataset.digito = aluno.digito;
+                option.dataset.email = aluno.email;
+                alunoSelect.appendChild(option);
+            });
+        }
+    }
+
+    function preencherDadosAluno() {
+        const alunoSelect = document.getElementById('aluno');
+        const selectedOption = alunoSelect.options[alunoSelect.selectedIndex];
+        
+        if (selectedOption && selectedOption.value) {
+            document.getElementById('ra').value = selectedOption.dataset.ra || '';
+            document.getElementById('digito').value = selectedOption.dataset.digito || '';
+            document.getElementById('email').value = selectedOption.dataset.email || '';
+            document.getElementById('chamada').value = selectedOption.dataset.chamada || '';
+        } else {
+            document.getElementById('ra').value = '';
+            document.getElementById('digito').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('chamada').value = '';
+        }
+    }
+
+    function selecionarOpcao(button, questionId) {
+        const parent = button.closest('.options-list');
+        parent.querySelectorAll('.option-btn').forEach(btn => {
+            btn.classList.remove('selected');
+        });
+        button.classList.add('selected');
+        respostasAluno[questionId] = button.dataset.value;
+        
+        const feedbackDiv = document.getElementById(`feedback-${questionId}`);
+        feedbackDiv.className = 'feedback';
+        feedbackDiv.textContent = '';
+    }
+
+    document.getElementById('quizForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const turma = document.getElementById('turma').value;
+        const alunoSelect = document.getElementById('aluno');
+        const alunoNome = alunoSelect.options[alunoSelect.selectedIndex]?.textContent || '';
+        const ra = document.getElementById('ra').value;
+        const digito = document.getElementById('digito').value;
+        const email = document.getElementById('email').value;
+        const data = document.getElementById('data').value;
+        const chamada = document.getElementById('chamada').value;
+
+        if (!turma || !alunoNome || !ra) {
+            alert('Por favor, selecione a Turma e o Aluno antes de enviar.');
+            return;
+        }
+
+        let todasRespondidas = true;
+        for (let i = 1; i <= 7; i++) {
+            const qId = `q${i}`;
+            if (!respostasAluno[qId]) {
+                todasRespondidas = false;
+                alert(`Por favor, responda a questão ${i}.`);
+                break;
+            }
+        }
+        if (!todasRespondidas) return;
+
+        let acertos = 0;
+        for (let i = 1; i <= 7; i++) {
+            const qId = `q${i}`;
+            const feedbackDiv = document.getElementById(`feedback-${qId}`);
+            const selectedBtn = document.querySelector(`.option-btn[data-question="${qId}"].selected`);
+            
+            if (respostasAluno[qId] === respostasCorretas[qId]) {
+                acertos++;
+                if (selectedBtn) selectedBtn.classList.add('correct');
+                feedbackDiv.textContent = '✔ Resposta Correta!';
+                feedbackDiv.className = 'feedback correct';
+            } else {
+                if (selectedBtn) selectedBtn.classList.add('incorrect');
+                const correctBtn = document.querySelector(`.option-btn[data-question="${qId}"][data-value="${respostasCorretas[qId]}"]`);
+                if (correctBtn) correctBtn.classList.add('correct');
+                
+                feedbackDiv.textContent = `✘ Resposta Incorreta. A resposta correta é a alternativa ${respostasCorretas[qId]}.`;
+                feedbackDiv.className = 'feedback incorrect';
+            }
+        }
+
+        document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
+
+        const respostasDissertativas = {
+            q8: document.getElementById('q8').value,
+            q9: document.getElementById('q9').value,
+            q10: document.getElementById('q10').value
+        };
+
+        const dadosEnvio = {
+            turma: turma,
+            chamada: chamada,
+            nome: alunoNome,
+            ra: ra,
+            digito: digito,
+            email: email,
+            data: data,
+            q1: respostasAluno.q1,
+            q2: respostasAluno.q2,
+            q3: respostasAluno.q3,
+            q4: respostasAluno.q4,
+            q5: respostasAluno.q5,
+            q6: respostasAluno.q6,
+            q7: respostasAluno.q7,
+            q8: respostasDissertativas.q8,
+            q9: respostasDissertativas.q9,
+            q10: respostasDissertativas.q10,
+            pontuacao: acertos
+        };
+
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbx.../exec'; // Substitua pela sua URL
+
+        fetch(scriptURL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(dadosEnvio)
+        })
+        .then(response => {
+            const resultMessage = document.getElementById('resultMessage');
+            resultMessage.textContent = `Atividade enviada com sucesso! Você acertou ${acertos} de 7 questões de múltipla escolha.`;
+            resultMessage.className = 'result-message success';
+            resultMessage.style.display = 'block';
+            resultMessage.scrollIntoView({ behavior: 'smooth' });
+        })
+        .catch(error => {
+            console.error('Erro ao enviar:', error);
+            const resultMessage = document.getElementById('resultMessage');
+            resultMessage.textContent = 'Ocorreu um erro ao enviar sua atividade. Tente novamente.';
+            resultMessage.className = 'result-message error';
+            resultMessage.style.display = 'block';
+        });
+    });
+</script>
+
+</body>
+</html>
