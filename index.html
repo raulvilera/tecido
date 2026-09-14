@@ -77,7 +77,6 @@
         /* Ajuste do Grid para dimensionamento específico */
         .student-info {
             display: grid;
-            /* Colunas: Turma (1fr), Aluno (2fr) - Aluno precisa de mais espaço */
             grid-template-columns: 1fr 2fr;
             gap: 15px;
             margin-bottom: 30px;
@@ -86,23 +85,19 @@
             border-radius: 10px;
         }
 
-        /* Linhas de 3 colunas para RA, Dígito, Data */
         .student-info .row-3-cols {
             grid-column: span 2;
             display: grid;
-            grid-template-columns: 1.5fr 0.8fr 1fr; /* RA maior, Dígito menor, Data média */
+            grid-template-columns: 1.5fr 0.8fr 1fr;
             gap: 15px;
         }
 
-        /* Linha para E-mail (largura total) */
         .student-info .full-width {
             grid-column: span 2;
         }
 
-        /* NOVO: Linha para Nº de Chamada (apenas 1 coluna para não esticar) */
         .student-info .row-1-col {
             grid-column: span 1;
-            /* Opcional: alinhar à esquerda ou centro */
             justify-self: start;
             width: 100%;
         }
@@ -362,7 +357,7 @@
             <input type="text" id="email" readonly placeholder="Automático">
         </div>
 
-        <!-- Linha 4: Nº de Chamada (Ajustado para não esticar) -->
+        <!-- Linha 4: Nº de Chamada -->
         <div class="row-1-col">
             <label for="chamada">Nº de Chamada:</label>
             <input type="text" id="chamada" readonly placeholder="Automático">
@@ -743,30 +738,32 @@
             pontuacao: acertos
         };
 
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbzDYVhLN44a7dkofN29VnGdw93ptKtDleHYmD6sW8pvsLx3IKEx-1vumauglFYEy1lk/exec'; // Substitua pela sua URL
+        // ============================================================
+        // ENVIO DOS DADOS VIA XMLHttpRequest (Substituindo o fetch)
+        // ============================================================
+        const scriptURL = 'https://script.google.com/macros/s/AKfycby4o7HcDUra1TXcMOzVy28jBCLMoL4kCod6aad3t_ctOLAHXeVEjDg8K2Tk8j80HRDP/exec';
 
-        fetch(scriptURL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(dadosEnvio)
-        })
-        .then(response => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', scriptURL, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.onload = function() {
             const resultMessage = document.getElementById('resultMessage');
             resultMessage.textContent = `Atividade enviada com sucesso! Você acertou ${acertos} de 7 questões de múltipla escolha.`;
             resultMessage.className = 'result-message success';
             resultMessage.style.display = 'block';
             resultMessage.scrollIntoView({ behavior: 'smooth' });
-        })
-        .catch(error => {
-            console.error('Erro ao enviar:', error);
+        };
+
+        xhr.onerror = function() {
+            console.error('Erro ao enviar.');
             const resultMessage = document.getElementById('resultMessage');
             resultMessage.textContent = 'Ocorreu um erro ao enviar sua atividade. Tente novamente.';
             resultMessage.className = 'result-message error';
             resultMessage.style.display = 'block';
-        });
+        };
+
+        xhr.send(JSON.stringify(dadosEnvio));
     });
 </script>
 
